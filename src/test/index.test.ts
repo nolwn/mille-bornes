@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import Game from "../../game";
-import Player from "../../game/Player";
+import Game from "..";
+import Player from "../Player";
 
 describe("Game", () => {
 	let game: Game;

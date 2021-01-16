@@ -1,7 +1,22 @@
-import Koa from "koa";
-import bodyParser from "koa-bodyparser";
+import { Card } from "./Card";
+import Player from "./Player";
 
-const app = new Koa();
+export default class Game {
+	#players: Player[];
 
-app.use(bodyParser());
-app.listen(3000);
+	constructor() {
+		this.#players = [];
+	}
+
+	get players(): Player[] {
+		return this.#players;
+	}
+
+	get turn(): Player {
+		return new Player();
+	}
+
+	addPlayer(player: Player): void {
+		this.#players.push(player);
+	}
+}

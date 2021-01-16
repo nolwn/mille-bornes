@@ -1,6 +1,7 @@
 import { expect } from "chai";
-import Player from "../../game/Player";
-import { Card, CardArea, CardKind } from "../../game/Card";
+import Player from "../Player";
+import { Card, CardArea, CardKind } from "../Card";
+import TestCard from "./TestCard";
 
 describe("Player", () => {
 	let player: Player;
@@ -16,7 +17,7 @@ describe("Player", () => {
 	});
 
 	it("should draw", () => {
-		const card = new Card(CardArea.Battle, CardKind.Hazard);
+		const card = new TestCard(CardArea.Battle, CardKind.Hazard);
 		player.draw(card);
 
 		const { cards } = player;
@@ -24,8 +25,8 @@ describe("Player", () => {
 		expect(cards[0]).to.deep.equal(card);
 	});
 
-	it("should accept cards onto the battle pile", () => {
-		const hazardCard = new Card(CardArea.Battle, CardKind.Hazard);
+	it("should recieve cards onto the battle pile", () => {
+		const hazardCard = new TestCard(CardArea.Battle, CardKind.Hazard);
 
 		expect(player.battle).to.be.null;
 

@@ -1,5 +1,3 @@
-import Player from "./Player";
-
 export enum CardArea {
 	Battle = "BATTLE",
 	Speed = "SPEED",
@@ -14,7 +12,7 @@ export enum CardKind {
 	Distance = "DISTANCE",
 }
 
-export class Card {
+export abstract class Card {
 	#area: CardArea;
 	#kind: CardKind;
 
@@ -30,6 +28,6 @@ export class Card {
 	get kind(): CardKind {
 		return this.#kind;
 	}
-}
 
-// export type Card = Hazard;
+	abstract play(card: Card): boolean;
+}

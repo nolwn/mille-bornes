@@ -1,6 +1,7 @@
 import { expect } from "chai";
-import { Card, CardArea, CardKind } from "../../game/Card";
-import Player from "../../game/Player";
+import { CardArea, CardKind } from "../Card";
+import Player from "../Player";
+import TestCard from "./TestCard";
 
 describe("Cards", () => {
 	let player: Player;
@@ -12,10 +13,14 @@ describe("Cards", () => {
 	});
 
 	it("creates a new card", () => {
-		const card = new Card(CardArea.Battle, CardKind.Distance);
+		const card = new TestCard(CardArea.Battle, CardKind.Distance);
 		const { area, kind } = card;
 
 		expect(area).to.equal(CardArea.Battle);
 		expect(kind).to.equal(CardKind.Distance);
+	});
+
+	it("runs rules against other cards", () => {
+		const card = new TestCard(CardArea.Battle, CardKind.Hazard);
 	});
 });
