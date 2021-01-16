@@ -3,11 +3,9 @@ import Player from "./Player";
 
 export default class Game {
 	#players: Player[];
-	#battleCards: Card[];
 
 	constructor() {
 		this.#players = [];
-		this.#battleCards = [];
 	}
 
 	get players(): Player[] {
