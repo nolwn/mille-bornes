@@ -4,15 +4,15 @@
 		"@types/mocha": "^8.2.0",
 		"chai": "^4.2.0",
 		"mocha": "^8.2.1",
+		"ts-node": "^9.1.1",
 		"typescript": "^4.1.3"
 	},
 	"name": "mille-bourne",
 	"version": "1.0.0",
 	"description": "The second most popular game in France!",
 	"main": "dist/index.js",
-	"dependencies": {},
 	"scripts": {
-		"test": "tsc && mocha dist/test/game"
+		"test": "tsc && mocha dist/test"
 	},
 	"author": "Nolan Hellyer",
 	"license": "ISC"

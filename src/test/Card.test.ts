@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { CardArea, CardKind } from "../Card";
+import { Card, CardArea, CardKind } from "../Card";
 import Player from "../Player";
 import TestCard from "./TestCard";
 
@@ -20,7 +20,20 @@ describe("Cards", () => {
 		expect(kind).to.equal(CardKind.Distance);
 	});
 
+	// TODO: replace this with tests against actual cards
 	it("runs rules against other cards", () => {
 		const card = new TestCard(CardArea.Battle, CardKind.Hazard);
+
+		let playRules = () => true;
+		card.playRules = playRules;
+
+		let result = card.play(card);
+		expect(result).to.be.true;
+
+		playRules = () => false;
+		card.playRules = playRules;
+
+		result = card.play(card);
+		expect(result).to.be.false;
 	});
 });
