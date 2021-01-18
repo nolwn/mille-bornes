@@ -29,6 +29,18 @@ export default class Player {
 		return this.peek(CardArea.Speed);
 	}
 
+	private checkPiles(card: Card): boolean {
+		const cards = [this.battle, this.speed, ...this.safetyArea];
+
+		for (const c of cards) {
+			if (c?.play(card) === false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private peek(pileType: CardArea): Card | null {
 		let pile: Card[];
 
@@ -60,7 +72,7 @@ export default class Player {
 	play(target: Player, card: Card) {}
 
 	recieve(card: Card): boolean {
-		if (this.battle?.play(card) === false) {
+		if (!this.checkPiles(card)) {
 			return false;
 		}
 

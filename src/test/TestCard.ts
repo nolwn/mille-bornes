@@ -3,14 +3,10 @@ import { Card, CardArea, CardKind } from "../Card";
 export default class TestCard extends Card {
 	#playRules: (card: Card) => boolean;
 
-	constructor(area: CardArea, kind: CardKind) {
+	constructor(area: CardArea, kind: CardKind, isPermissive: boolean) {
 		super(area, kind);
 
-		this.#playRules = () => true;
-	}
-
-	set playRules(fn: (card: Card) => boolean) {
-		this.#playRules = fn;
+		this.#playRules = () => isPermissive;
 	}
 
 	play(card: Card) {

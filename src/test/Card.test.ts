@@ -13,7 +13,7 @@ describe("Cards", () => {
 	});
 
 	it("creates a new card", () => {
-		const card = new TestCard(CardArea.Battle, CardKind.Distance);
+		const card = new TestCard(CardArea.Battle, CardKind.Distance, true);
 		const { area, kind } = card;
 
 		expect(area).to.equal(CardArea.Battle);
@@ -22,18 +22,18 @@ describe("Cards", () => {
 
 	// TODO: replace this with tests against actual cards
 	it("runs rules against other cards", () => {
-		const card = new TestCard(CardArea.Battle, CardKind.Hazard);
+		const permissiveCard = new TestCard(CardArea.Battle, CardKind.Hazard, true);
 
-		let playRules = () => true;
-		card.playRules = playRules;
-
-		let result = card.play(card);
+		let result = permissiveCard.play(permissiveCard);
 		expect(result).to.be.true;
 
-		playRules = () => false;
-		card.playRules = playRules;
+		const restrictiveCard = new TestCard(
+			CardArea.Battle,
+			CardKind.Hazard,
+			false
+		);
 
-		result = card.play(card);
+		result = restrictiveCard.play(permissiveCard);
 		expect(result).to.be.false;
 	});
 });
