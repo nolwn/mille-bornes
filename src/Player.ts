@@ -1,10 +1,10 @@
-import { Card, CardArea } from "./Card";
+import { ActionCard, CardArea } from "./Card";
 
 export default class Player {
-	#cards: Card[];
-	#battlePile: Card[];
-	#speedPile: Card[];
-	#safetyArea: Card[];
+	#cards: ActionCard[];
+	#battlePile: ActionCard[];
+	#speedPile: ActionCard[];
+	#safetyArea: ActionCard[];
 
 	constructor() {
 		this.#battlePile = [];
@@ -13,23 +13,23 @@ export default class Player {
 		this.#safetyArea = [];
 	}
 
-	get battle(): Card | null {
+	get battle(): ActionCard | null {
 		return this.peek(CardArea.Battle);
 	}
 
-	get cards(): Card[] {
+	get cards(): ActionCard[] {
 		return this.#cards;
 	}
 
-	get safetyArea(): Card[] {
+	get safetyArea(): ActionCard[] {
 		return this.#safetyArea;
 	}
 
-	get speed(): Card | null {
+	get speed(): ActionCard | null {
 		return this.peek(CardArea.Speed);
 	}
 
-	private checkPiles(card: Card): boolean {
+	private checkPiles(card: ActionCard): boolean {
 		const cards = [this.battle, this.speed, ...this.safetyArea];
 
 		for (const c of cards) {
@@ -41,16 +41,18 @@ export default class Player {
 		return true;
 	}
 
-	private peek(pileType: CardArea): Card | null {
-		let pile: Card[];
+	private peek(pileType: CardArea): ActionCard | null {
+		let pile: ActionCard[];
 
 		switch (pileType) {
 			case CardArea.Battle:
 				pile = this.#battlePile;
 				break;
+
 			case CardArea.Speed:
 				pile = this.#speedPile;
 				break;
+
 			default:
 				pile = [];
 				break;
@@ -65,13 +67,13 @@ export default class Player {
 		return null;
 	}
 
-	draw(card: Card): void {
+	draw(card: ActionCard): void {
 		this.#cards.push(card);
 	}
 
-	play(target: Player, card: Card) {}
+	play(target: Player, card: ActionCard) {}
 
-	recieve(card: Card): boolean {
+	recieve(card: ActionCard): boolean {
 		if (!this.checkPiles(card)) {
 			return false;
 		}
@@ -80,12 +82,15 @@ export default class Player {
 			case CardArea.Battle:
 				this.#battlePile.push(card);
 				break;
+
 			case CardArea.Speed:
 				this.#speedPile.push(card);
 				break;
+
 			case CardArea.Safety:
 				this.#safetyArea.push(card);
 				break;
+
 			default:
 				return false;
 		}

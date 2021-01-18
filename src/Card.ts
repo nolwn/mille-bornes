@@ -28,6 +28,12 @@ export abstract class Card {
 	get kind(): CardKind {
 		return this.#kind;
 	}
+}
 
+export abstract class ActionCard extends Card {
 	abstract play(card: Card): boolean;
+}
+
+export abstract class DistanceCard extends Card {
+	abstract get distance(): number;
 }

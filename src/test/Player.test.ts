@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import Player from "../Player";
 import { CardArea, CardKind } from "../Card";
-import TestCard from "./TestCard";
+import { TestActionCard } from "./TestCard";
 
 describe("Player", () => {
 	let player: Player;
@@ -17,7 +17,7 @@ describe("Player", () => {
 	});
 
 	it("should draw", () => {
-		const card = new TestCard(CardArea.Battle, CardKind.Hazard, true);
+		const card = new TestActionCard(CardArea.Battle, CardKind.Hazard, true);
 		player.draw(card);
 
 		const { cards } = player;
@@ -26,7 +26,11 @@ describe("Player", () => {
 	});
 
 	it("should recieve cards onto the battle pile", () => {
-		const hazardCard = new TestCard(CardArea.Battle, CardKind.Hazard, true);
+		const hazardCard = new TestActionCard(
+			CardArea.Battle,
+			CardKind.Hazard,
+			true
+		);
 
 		expect(player.battle).to.be.null;
 
@@ -38,7 +42,7 @@ describe("Player", () => {
 	});
 
 	it("should reject cards when the battle card returns false", () => {
-		const restrictiveCard = new TestCard(
+		const restrictiveCard = new TestActionCard(
 			CardArea.Battle,
 			CardKind.Hazard,
 			false
@@ -46,7 +50,11 @@ describe("Player", () => {
 
 		player.recieve(restrictiveCard);
 
-		const nextCard = new TestCard(CardArea.Distance, CardKind.Distance, true);
+		const nextCard = new TestActionCard(
+			CardArea.Distance,
+			CardKind.Distance,
+			true
+		);
 		const result = player.recieve(nextCard);
 
 		expect(result).to.be.false;
@@ -55,7 +63,7 @@ describe("Player", () => {
 	});
 
 	it("should recieve cards onto the speed pile", () => {
-		const speedCard = new TestCard(CardArea.Speed, CardKind.Remedy, true);
+		const speedCard = new TestActionCard(CardArea.Speed, CardKind.Remedy, true);
 
 		expect(player.speed).to.be.null;
 
@@ -67,7 +75,7 @@ describe("Player", () => {
 	});
 
 	it("should reject cards when the speed card returns false", () => {
-		const restrictiveCard = new TestCard(
+		const restrictiveCard = new TestActionCard(
 			CardArea.Speed,
 			CardKind.Hazard,
 			false
@@ -75,7 +83,11 @@ describe("Player", () => {
 
 		player.recieve(restrictiveCard);
 
-		const nextCard = new TestCard(CardArea.Distance, CardKind.Distance, true);
+		const nextCard = new TestActionCard(
+			CardArea.Distance,
+			CardKind.Distance,
+			true
+		);
 		const result = player.recieve(nextCard);
 
 		expect(result).to.be.false;
@@ -84,7 +96,7 @@ describe("Player", () => {
 	});
 
 	it("should recieve cards onto the safety area", () => {
-		let safetyCard = new TestCard(CardArea.Safety, CardKind.Safety, true);
+		let safetyCard = new TestActionCard(CardArea.Safety, CardKind.Safety, true);
 
 		expect(player.safetyArea.length).to.equal(0);
 
@@ -95,7 +107,7 @@ describe("Player", () => {
 		expect(player.safetyArea[0].kind).to.equal(CardKind.Safety);
 		expect(player.safetyArea[0].area).to.equal(CardArea.Safety);
 
-		safetyCard = new TestCard(CardArea.Safety, CardKind.Remedy, true);
+		safetyCard = new TestActionCard(CardArea.Safety, CardKind.Remedy, true);
 		result = player.recieve(safetyCard);
 		const [firstCard, secondCard] = player.safetyArea;
 
@@ -108,9 +120,13 @@ describe("Player", () => {
 	});
 
 	it("should reject cards if the safety area accepts it", () => {
-		const permissiveCard = new TestCard(CardArea.Speed, CardKind.Remedy, true);
+		const permissiveCard = new TestActionCard(
+			CardArea.Speed,
+			CardKind.Remedy,
+			true
+		);
 
-		const nextCard = new TestCard(CardArea.Speed, CardKind.Hazard, true);
+		const nextCard = new TestActionCard(CardArea.Speed, CardKind.Hazard, true);
 
 		let result = player.recieve(permissiveCard);
 		expect(result).to.be.true;
@@ -122,13 +138,13 @@ describe("Player", () => {
 	});
 
 	it("should reject cards if the safety area rejects it", () => {
-		const restrictiveCard = new TestCard(
+		const restrictiveCard = new TestActionCard(
 			CardArea.Speed,
 			CardKind.Hazard,
 			false
 		);
 
-		const nextCard = new TestCard(CardArea.Speed, CardKind.Remedy, true);
+		const nextCard = new TestActionCard(CardArea.Speed, CardKind.Remedy, true);
 
 		let result = player.recieve(restrictiveCard);
 		expect(result).to.be.true;
@@ -140,19 +156,19 @@ describe("Player", () => {
 	});
 
 	it("should not block cards when all safety area cards accept it", () => {
-		const firstPermissiveCard = new TestCard(
+		const firstPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
 		);
 
-		const secondPermissiveCard = new TestCard(
+		const secondPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
 		);
 
-		const thirdPermissiveCard = new TestCard(
+		const thirdPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
@@ -171,25 +187,25 @@ describe("Player", () => {
 	});
 
 	it("should block cards when any safety area card returns false", () => {
-		const firstPermissiveCard = new TestCard(
+		const firstPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
 		);
 
-		const secondPermissiveCard = new TestCard(
+		const secondPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
 		);
 
-		const firstRestrictiveCard = new TestCard(
+		const firstRestrictiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			false
 		);
 
-		const thirdPermissiveCard = new TestCard(
+		const thirdPermissiveCard = new TestActionCard(
 			CardArea.Safety,
 			CardKind.Safety,
 			true
@@ -208,5 +224,13 @@ describe("Player", () => {
 		expect(result).to.be.false;
 
 		expect(player.safetyArea.length).to.equal(3);
+	});
+
+	it("can recieve distance cards", () => {
+		const distanceCard = new TestActionCard(
+			CardArea.Distance,
+			CardKind.Distance,
+			true
+		);
 	});
 });

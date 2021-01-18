@@ -1,6 +1,6 @@
-import { Card, CardArea, CardKind } from "../Card";
+import { ActionCard, Card, CardArea, CardKind } from "../Card";
 
-export default class TestCard extends Card {
+export class TestActionCard extends ActionCard {
 	#playRules: (card: Card) => boolean;
 
 	constructor(area: CardArea, kind: CardKind, isPermissive: boolean) {
@@ -13,3 +13,5 @@ export default class TestCard extends Card {
 		return this.#playRules(card);
 	}
 }
+
+export class Test100MilleCard extends Card {}
