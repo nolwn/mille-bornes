@@ -76,4 +76,28 @@ describe("Player", () => {
 		expect(player.speed?.area).to.equal(CardArea.Speed);
 		expect(player.speed?.kind).to.equal(CardKind.Hazard);
 	});
+
+	it("should recieve cards onto the safety area", () => {
+		let safetyCard = new TestCard(CardArea.Safety, CardKind.Safety);
+
+		expect(player.safetyArea.length).to.equal(0);
+
+		let result = player.recieve(safetyCard);
+
+		expect(result).to.be.true;
+		expect(player.safetyArea.length).to.equal(1);
+		expect(player.safetyArea[0].kind).to.equal(CardKind.Safety);
+		expect(player.safetyArea[0].area).to.equal(CardArea.Safety);
+
+		safetyCard = new TestCard(CardArea.Safety, CardKind.Remedy);
+		result = player.recieve(safetyCard);
+		const [firstCard, secondCard] = player.safetyArea;
+
+		expect(result).to.be.true;
+		expect(player.safetyArea.length).to.equal(2);
+		expect(firstCard.kind).to.equal(CardKind.Safety);
+		expect(firstCard.area).to.equal(CardArea.Safety);
+		expect(secondCard.kind).to.equal(CardKind.Remedy);
+		expect(secondCard.area).to.equal(CardArea.Safety);
+	});
 });

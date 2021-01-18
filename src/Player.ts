@@ -4,11 +4,13 @@ export default class Player {
 	#cards: Card[];
 	#battlePile: Card[];
 	#speedPile: Card[];
+	#safetyArea: Card[];
 
 	constructor() {
 		this.#battlePile = [];
 		this.#cards = [];
 		this.#speedPile = [];
+		this.#safetyArea = [];
 	}
 
 	get battle(): Card | null {
@@ -17,6 +19,10 @@ export default class Player {
 
 	get cards(): Card[] {
 		return this.#cards;
+	}
+
+	get safetyArea(): Card[] {
+		return this.#safetyArea;
 	}
 
 	get speed(): Card | null {
@@ -64,6 +70,9 @@ export default class Player {
 				break;
 			case CardArea.Speed:
 				this.#speedPile.push(card);
+				break;
+			case CardArea.Safety:
+				this.#safetyArea.push(card);
 				break;
 			default:
 				return false;
