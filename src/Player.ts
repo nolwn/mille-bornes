@@ -1,24 +1,33 @@
-import { ActionCard, CardArea } from "./Card";
+import { ActionCard, Card, CardArea, DistanceCard } from "./Card";
 
 export default class Player {
-	#cards: ActionCard[];
+	#cards: Card[];
 	#battlePile: ActionCard[];
 	#speedPile: ActionCard[];
 	#safetyArea: ActionCard[];
+	#distanceCards: DistanceCard[];
 
 	constructor() {
 		this.#battlePile = [];
 		this.#cards = [];
 		this.#speedPile = [];
 		this.#safetyArea = [];
+		this.#distanceCards = [];
 	}
 
 	get battle(): ActionCard | null {
 		return this.peek(CardArea.Battle);
 	}
 
-	get cards(): ActionCard[] {
+	get cards(): Card[] {
 		return this.#cards;
+	}
+
+	get distance(): number {
+		return this.#distanceCards.reduce(
+			(total, { distance }) => (total += distance),
+			0
+		);
 	}
 
 	get safetyArea(): ActionCard[] {
@@ -29,7 +38,7 @@ export default class Player {
 		return this.peek(CardArea.Speed);
 	}
 
-	private checkPiles(card: ActionCard): boolean {
+	private checkPiles(card: Card): boolean {
 		const cards = [this.battle, this.speed, ...this.safetyArea];
 
 		for (const c of cards) {
@@ -67,15 +76,20 @@ export default class Player {
 		return null;
 	}
 
-	draw(card: ActionCard): void {
+	draw(card: Card): void {
 		this.#cards.push(card);
 	}
 
 	play(target: Player, card: ActionCard) {}
 
-	recieve(card: ActionCard): boolean {
+	recieve(card: ActionCard | DistanceCard): boolean {
 		if (!this.checkPiles(card)) {
 			return false;
+		}
+
+		if ("distance" in card) {
+			this.#distanceCards.push(card);
+			return true;
 		}
 
 		switch (card.area) {

@@ -1,4 +1,4 @@
-import { ActionCard, Card, CardArea, CardKind } from "../Card";
+import { ActionCard, Card, CardArea, CardKind, DistanceCard } from "../Card";
 
 export class TestActionCard extends ActionCard {
 	#playRules: (card: Card) => boolean;
@@ -14,4 +14,14 @@ export class TestActionCard extends ActionCard {
 	}
 }
 
-export class Test100MilleCard extends Card {}
+export class Test100Card extends DistanceCard {
+	get distance(): number {
+		return 100;
+	}
+}
+
+export class Test50Card extends DistanceCard {
+	get distance(): number {
+		return 50;
+	}
+}

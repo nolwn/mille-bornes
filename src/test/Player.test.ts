@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import Player from "../Player";
-import { CardArea, CardKind } from "../Card";
-import { TestActionCard } from "./TestCard";
+import { Card, CardArea, CardKind } from "../Card";
+import { Test100Card, Test50Card, TestActionCard } from "./TestCard";
 
 describe("Player", () => {
 	let player: Player;
@@ -227,10 +227,25 @@ describe("Player", () => {
 	});
 
 	it("can recieve distance cards", () => {
-		const distanceCard = new TestActionCard(
+		const distance100Card = new Test100Card(
 			CardArea.Distance,
-			CardKind.Distance,
-			true
+			CardKind.Distance
 		);
+		const distance50Card = new Test50Card(CardArea.Distance, CardKind.Distance);
+
+		let distance = player.distance;
+		expect(distance).to.equal(0);
+
+		let result = player.recieve(distance100Card);
+		distance = player.distance;
+		expect(result).to.be.true;
+		expect(distance).to.equal(100);
+
+		player.recieve(distance100Card);
+		result = player.recieve(distance50Card);
+		distance = player.distance;
+		expect(result).to.be.true;
+
+		expect(distance).to.equal(250);
 	});
 });
