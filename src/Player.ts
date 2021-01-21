@@ -1,7 +1,7 @@
 import { ActionCard, Card, CardArea, DistanceCard } from "./Card";
 
 export default class Player {
-	#cards: Card[];
+	#cards: (DistanceCard | ActionCard)[];
 	#battlePile: ActionCard[];
 	#speedPile: ActionCard[];
 	#safetyArea: ActionCard[];
@@ -19,7 +19,7 @@ export default class Player {
 		return this.peek(CardArea.Battle);
 	}
 
-	get cards(): Card[] {
+	get cards(): (DistanceCard | ActionCard)[] {
 		return this.#cards;
 	}
 
@@ -76,11 +76,21 @@ export default class Player {
 		return null;
 	}
 
-	draw(card: Card): void {
+	draw(card: DistanceCard | ActionCard): void {
 		this.#cards.push(card);
 	}
 
-	play(target: Player, card: ActionCard) {}
+	play(target: Player, cardIdx: number): boolean {
+		const card = this.cards[cardIdx];
+		const result = target.recieve(card);
+
+		if (result) {
+			this.#cards.splice(cardIdx, 1);
+			return true;
+		}
+
+		return false;
+	}
 
 	recieve(card: ActionCard | DistanceCard): boolean {
 		if (!this.checkPiles(card)) {

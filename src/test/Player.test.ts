@@ -245,7 +245,52 @@ describe("Player", () => {
 		result = player.recieve(distance50Card);
 		distance = player.distance;
 		expect(result).to.be.true;
-
 		expect(distance).to.equal(250);
+	});
+
+	it("should be able to play a card on another player when that card is receivable", () => {
+		const targetPlayer = new Player();
+
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Hazard, true));
+		player.draw(new TestActionCard(CardArea.Speed, CardKind.Hazard, true));
+
+		let idx = player.cards.findIndex(({ area }) => area === CardArea.Battle);
+		let result = player.play(targetPlayer, idx);
+
+		expect(result).to.be.true;
+		expect(targetPlayer.battle).to.exist;
+		expect(targetPlayer.speed).to.not.exist;
+		expect(player.cards.length).to.equal(1);
+
+		idx = 0;
+		result = player.play(targetPlayer, idx);
+
+		expect(result).to.be.true;
+		expect(targetPlayer.battle).to.exist;
+		expect(targetPlayer.speed).to.exist;
+		expect(player.cards.length).to.equal(0);
+	});
+
+	it("should not be able to play a card on another player when that card is not receivable", () => {
+		const targetPlayer = new Player();
+
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Hazard, false));
+		player.draw(new TestActionCard(CardArea.Speed, CardKind.Hazard, true));
+
+		let idx = player.cards.findIndex(({ area }) => area === CardArea.Battle);
+		let result = player.play(targetPlayer, idx);
+
+		expect(result).to.be.true;
+		expect(targetPlayer.battle).to.exist;
+		expect(targetPlayer.speed).to.not.exist;
+		expect(player.cards.length).to.equal(1);
+
+		idx = 0;
+		result = player.play(targetPlayer, idx);
+
+		expect(result).to.be.false;
+		expect(targetPlayer.battle).to.exist;
+		expect(targetPlayer.speed).to.not.exist;
+		expect(player.cards.length).to.equal(1);
 	});
 });
