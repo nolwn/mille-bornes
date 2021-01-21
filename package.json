@@ -4,6 +4,7 @@
 		"@types/mocha": "^8.2.0",
 		"chai": "^4.2.0",
 		"mocha": "^8.2.1",
+		"nyc": "^15.1.0",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.1.3"
 	},
@@ -12,7 +13,7 @@
 	"description": "The second most popular game in France!",
 	"main": "dist/index.js",
 	"scripts": {
-		"test": "tsc && mocha dist/test"
+		"test": "tsc && nyc mocha dist/test"
 	},
 	"author": "Nolan Hellyer",
 	"license": "ISC"

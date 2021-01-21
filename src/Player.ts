@@ -1,4 +1,4 @@
-import { ActionCard, Card, CardArea, DistanceCard } from "./Card";
+import { ActionCard, Card, CardArea, CardKind, DistanceCard } from "./Card";
 
 export default class Player {
 	#cards: (DistanceCard | ActionCard)[];
@@ -50,8 +50,24 @@ export default class Player {
 		return true;
 	}
 
+	private canTarget(target: Player, card: Card): boolean {
+		if (this === target) {
+			if (card.kind === CardKind.Hazard) {
+				return false;
+			} else if (this.battle === null) {
+				return false;
+			}
+		} else {
+			if (card.kind === CardKind.Remedy) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	private peek(pileType: CardArea): ActionCard | null {
-		let pile: ActionCard[];
+		let pile: ActionCard[] = [];
 
 		switch (pileType) {
 			case CardArea.Battle:
@@ -60,10 +76,6 @@ export default class Player {
 
 			case CardArea.Speed:
 				pile = this.#speedPile;
-				break;
-
-			default:
-				pile = [];
 				break;
 		}
 
@@ -82,6 +94,11 @@ export default class Player {
 
 	play(target: Player, cardIdx: number): boolean {
 		const card = this.cards[cardIdx];
+
+		if (!this.canTarget(target, card)) {
+			return false;
+		}
+
 		const result = target.recieve(card);
 
 		if (result) {
@@ -114,9 +131,6 @@ export default class Player {
 			case CardArea.Safety:
 				this.#safetyArea.push(card);
 				break;
-
-			default:
-				return false;
 		}
 
 		return true;

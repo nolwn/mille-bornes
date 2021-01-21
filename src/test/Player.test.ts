@@ -226,7 +226,7 @@ describe("Player", () => {
 		expect(player.safetyArea.length).to.equal(3);
 	});
 
-	it("can recieve distance cards", () => {
+	it("should recieve distance cards", () => {
 		const distance100Card = new Test100Card(
 			CardArea.Distance,
 			CardKind.Distance
@@ -292,5 +292,65 @@ describe("Player", () => {
 		expect(targetPlayer.battle).to.exist;
 		expect(targetPlayer.speed).to.not.exist;
 		expect(player.cards.length).to.equal(1);
+	});
+
+	it("should not be able to play a hazard on oneself", () => {
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Hazard, true));
+
+		const result = player.play(player, 0);
+
+		expect(result).to.be.false;
+		expect(player.cards.length).to.equal(1);
+		expect(player.battle).to.be.null;
+	});
+
+	it("should not be able to play a remedy on one's opponent", () => {
+		const target = new Player();
+
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Remedy, true));
+
+		const result = player.play(target, 0);
+
+		expect(result).to.be.false;
+		expect(player.cards.length).to.equal(1);
+		expect(player.battle).to.be.null;
+	});
+
+	it("should not be able to play a remedy on an empty battle pile", () => {
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Remedy, true));
+
+		const result = player.play(player, 0);
+
+		expect(result).to.be.false;
+		expect(player.cards.length).to.equal(1);
+		expect(player.battle).to.be.null;
+	});
+
+	it("should be able to play a remedy on oneself over a hazard", () => {
+		const opponent = new Player();
+
+		opponent.draw(new TestActionCard(CardArea.Battle, CardKind.Hazard, true));
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Remedy, true));
+
+		opponent.play(player, 0);
+		const result = player.play(player, 0);
+
+		expect(result).to.be.true;
+		expect(player.battle).to.exist;
+		expect(player.battle?.kind).to.equal(CardKind.Remedy);
+		expect(player.cards.length).to.equal(0);
+	});
+
+	it("should be able to play a hazard on an opponent", () => {
+		const opponent = new Player();
+
+		player.draw(new TestActionCard(CardArea.Battle, CardKind.Hazard, true));
+
+		const result = player.play(opponent, 0);
+
+		expect(result).to.be.true;
+		expect(opponent.battle).to.exist;
+		expect(opponent.battle?.kind).to.equal(CardKind.Hazard);
+		expect(player.cards.length).to.equal(0);
 	});
 });
