@@ -9,7 +9,7 @@ export class TestActionCard extends ActionCard {
 		this.#playRules = () => isPermissive;
 	}
 
-	play(card: Card) {
+	check(card: Card) {
 		return this.#playRules(card);
 	}
 }

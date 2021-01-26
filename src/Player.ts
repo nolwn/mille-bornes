@@ -42,7 +42,7 @@ export default class Player {
 		const cards = [this.battle, this.speed, ...this.safetyArea];
 
 		for (const c of cards) {
-			if (c?.play(card) === false) {
+			if (c?.check(card) === false) {
 				return false;
 			}
 		}
