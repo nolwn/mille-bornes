@@ -1,6 +1,8 @@
 import { expect } from "chai";
 import {
 	Accident,
+	AceDriver,
+	ActionCard,
 	Card,
 	CardArea,
 	CardKind,
@@ -9,16 +11,18 @@ import {
 	Distance75,
 	Distance100,
 	Distance200,
+	EmergencyVehicle,
 	EndOfLimit,
+	ExtraTank,
 	FlatTire,
 	Gasoline,
 	OutOfGas,
+	PunctureProofTires,
 	Repair,
 	Roll,
 	SpareTire,
 	SpeedLimit,
 	Stop,
-	ActionCard,
 } from "../Card";
 import Player from "../Player";
 import { TestActionCard } from "./TestCard";
@@ -38,6 +42,10 @@ const outOfGas = new OutOfGas();
 const repairs = new Repair();
 const roll = new Roll();
 const stop = new Stop();
+const aceDriver = new AceDriver();
+const emergencyVehicle = new EmergencyVehicle();
+const extraTank = new ExtraTank();
+const punctureProofTires = new PunctureProofTires();
 const distacneCards = [
 	distance25,
 	distance50,
@@ -274,6 +282,66 @@ describe("Cards", () => {
 			const restricted = [endOfLimit];
 
 			checkCards(endOfLimit, restricted);
+		});
+	});
+
+	describe("Extra Tank", () => {
+		it("is a safety card for the safety area", () => {
+			const { area, kind } = extraTank;
+
+			expect(area).to.equal(CardArea.Safety);
+			expect(kind).to.equal(CardKind.Safety);
+		});
+
+		it("blocks Out of Gas", () => {
+			const restricted = [outOfGas];
+
+			checkCards(extraTank, restricted);
+		});
+	});
+
+	describe("Emergency Vehicle", () => {
+		it("is a safety card for the safety area", () => {
+			const { area, kind } = extraTank;
+
+			expect(area).to.equal(CardArea.Safety);
+			expect(kind).to.equal(CardKind.Safety);
+		});
+
+		it("blocks Speed Limit and Stop", () => {
+			const restricted = [speedLimit, stop];
+
+			checkCards(emergencyVehicle, restricted);
+		});
+	});
+
+	describe("Ace Driver", () => {
+		it("is a safety card for the safety area", () => {
+			const { area, kind } = aceDriver;
+
+			expect(area).to.equal(CardArea.Safety);
+			expect(kind).to.equal(CardKind.Safety);
+		});
+
+		it("blocks accident", () => {
+			const restricted = [accident];
+
+			checkCards(aceDriver, restricted);
+		});
+	});
+
+	describe("Puncture Proof Tires", () => {
+		it("is a safety card for the safety area", () => {
+			const { area, kind } = punctureProofTires;
+
+			expect(area).to.equal(CardArea.Safety);
+			expect(kind).to.equal(CardKind.Safety);
+		});
+
+		it("blocks Flat Tire", () => {
+			const restricted = [flatTire];
+
+			checkCards(punctureProofTires, restricted);
 		});
 	});
 

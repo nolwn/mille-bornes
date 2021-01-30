@@ -2,3 +2,4 @@ node_modules
 external
 dist
 .nyc_output
+.vscode

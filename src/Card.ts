@@ -240,6 +240,64 @@ export class EndOfLimit extends ActionCard {
 	}
 }
 
+export class AceDriver extends ActionCard {
+	constructor() {
+		super(CardArea.Safety, CardKind.Safety);
+	}
+
+	check(card: Card): boolean {
+		if (card.constructor.name === "Accident") {
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+export class EmergencyVehicle extends ActionCard {
+	constructor() {
+		super(CardArea.Safety, CardKind.Safety);
+	}
+
+	check(card: Card): boolean {
+		if (card.constructor.name === "Stop") {
+			return false;
+		} else if (card.constructor.name === "SpeedLimit") {
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+export class ExtraTank extends ActionCard {
+	constructor() {
+		super(CardArea.Safety, CardKind.Safety);
+	}
+
+	check(card: Card): boolean {
+		if (card.constructor.name === "OutOfGas") {
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+export class PunctureProofTires extends ActionCard {
+	constructor() {
+		super(CardArea.Safety, CardKind.Safety);
+	}
+
+	check(card: Card): boolean {
+		if (card.constructor.name === "FlatTire") {
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
 export class Distance25 extends DistanceCard {
 	constructor() {
 		super(CardArea.Distance, CardKind.Distance);
